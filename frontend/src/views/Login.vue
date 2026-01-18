@@ -1,12 +1,40 @@
 <template>
-	<div class="login">
-		<h2>Welcome to HyperGuest Test</h2>
-		<div class="login-form">
-			<input v-model="username" type="text" placeholder="Enter username" />
-			<button @click="handleLogin" :disabled="!username">Login</button>
-		</div>
-		<p v-if="error" class="error">{{ error }}</p>
-	</div>
+	<v-container fluid class="fill-height">
+		<v-row align="center" justify="center">
+			<v-col cols="12" sm="8" md="4">
+				<v-card elevation="8">
+					<v-card-title class="text-h5 text-center bg-primary">
+						Welcome to HyperGuest
+					</v-card-title>
+					<v-card-text class="pa-6">
+						<v-form @submit.prevent="handleLogin">
+							<v-text-field
+								v-model="username"
+								label="Username"
+								variant="outlined"
+								density="comfortable"
+								:rules="[(v) => !!v || 'Username is required']"
+							></v-text-field>
+
+							<v-alert v-if="error" type="error" variant="tonal" class="mb-4">
+								{{ error }}
+							</v-alert>
+
+							<v-btn
+								type="submit"
+								block
+								color="primary"
+								size="large"
+								:disabled="!username"
+							>
+								Login
+							</v-btn>
+						</v-form>
+					</v-card-text>
+				</v-card>
+			</v-col>
+		</v-row>
+	</v-container>
 </template>
 
 <script setup>
@@ -32,48 +60,7 @@ const handleLogin = async () => {
 </script>
 
 <style scoped>
-.login {
-	padding: 2rem;
-	text-align: center;
-	max-width: 400px;
-	margin: 0 auto;
-}
-
-.login-form {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-	margin-top: 2rem;
-}
-
-input {
-	padding: 0.5rem;
-	font-size: 1rem;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-}
-
-button {
-	padding: 0.5rem;
-	font-size: 1rem;
-	background-color: #42b983;
-	color: white;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-}
-
-button:disabled {
-	background-color: #ccc;
-	cursor: not-allowed;
-}
-
-button:hover:not(:disabled) {
-	background-color: #3aa876;
-}
-
-.error {
-	color: #dc3545;
-	margin-top: 1rem;
+.fill-height {
+	min-height: 100vh;
 }
 </style>
