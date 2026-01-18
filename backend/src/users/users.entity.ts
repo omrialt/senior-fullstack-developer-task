@@ -1,5 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
+export enum UserRole {
+  ADMIN = 'Admin',
+  EDITOR = 'Editor',
+  USER = 'User',
+}
+
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
@@ -8,8 +14,11 @@ export class User {
   @Column({ unique: true })
   username: string;
 
-  @Column({ default: 'User' }) // ❌ Single role only
-  role: string;
+  @Column({
+    type: 'simple-json',
+    default: () => `'["${UserRole.USER}"]'`,
+  })
+  roles: UserRole[];
 
   @Column()
   status: boolean;
