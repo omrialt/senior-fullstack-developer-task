@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
-import { UserRole } from '../users/users.entity';
+import { UserRole, UserStatus } from '../users/user.enums';
 
 export class InitialUserRoleSetup1680000000000 implements MigrationInterface {
   name = 'InitialUserRoleSetup1680000000000';
@@ -11,15 +11,16 @@ export class InitialUserRoleSetup1680000000000 implements MigrationInterface {
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     username TEXT NOT NULL UNIQUE,
                     roles TEXT NOT NULL DEFAULT '["${UserRole.USER}"]',
-                    status INTEGER NULL
+                    status TEXT NOT NULL DEFAULT '${UserStatus.ENABLED}'
                 )
             `);
 
       await queryRunner.query(`
                 INSERT OR IGNORE INTO users (username, roles, status) VALUES
-                ('admin_user', '["${UserRole.ADMIN}"]', 1),
-                ('regular_user', '["${UserRole.USER}"]', 1),
-                ('editor_user', '["${UserRole.EDITOR}"]', 1)
+                ('admin_user', '["${UserRole.ADMIN}"]', '${UserStatus.ENABLED}'),
+                ('regular_user', '["${UserRole.USER}"]', '${UserStatus.ENABLED}'),
+                ('editor_user', '["${UserRole.EDITOR}"]', '${UserStatus.ENABLED}'),
+                ('deleted_user', '["${UserRole.USER}"]', '${UserStatus.DELETED}')
             `);
     } catch (error) {
       console.error('Migration up error:', error);

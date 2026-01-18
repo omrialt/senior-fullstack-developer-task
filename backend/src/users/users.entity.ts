@@ -1,10 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-
-export enum UserRole {
-  ADMIN = 'Admin',
-  EDITOR = 'Editor',
-  USER = 'User',
-}
+import { UserRole, UserStatus } from './user.enums';
 
 @Entity('users')
 export class User {
@@ -20,6 +15,9 @@ export class User {
   })
   roles: UserRole[];
 
-  @Column()
-  status: boolean;
+  @Column({
+    type: 'text',
+    default: UserStatus.ENABLED,
+  })
+  status: UserStatus;
 }
